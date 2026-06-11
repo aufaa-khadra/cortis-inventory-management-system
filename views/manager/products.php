@@ -1,25 +1,12 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'Gudang') {
+if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'Manager') {
     header("Location: ../../auth/login.php");
     exit();
 }
 
 require_once '../../config/connection.php';
-
-if (isset($_GET['delete'])) {
-
-    $id = (int) $_GET['delete'];
-
-    mysqli_query($conn, "
-        DELETE FROM products
-        WHERE id = $id
-    ");
-
-    header("Location: products.php");
-    exit();
-}
 
 $search = $_GET['search'] ?? '';
 $category = $_GET['category'] ?? '';
@@ -59,10 +46,6 @@ $query = mysqli_query($conn, $sql);
 <body>
 
 <h1>Products</h1>
-
-<a href="add.php">
-    <button>Add Product</button>
-</a>
 
 <a href="dashboard.php">
     <button>Back</button>
@@ -108,11 +91,18 @@ $query = mysqli_query($conn, $sql);
         </button>
     </a>
 
+    <a href="export-products.php?search=<?= urlencode($search) ?>&category=<?= urlencode($category) ?>">
+    <button type="button">
+        Export Products Excel
+    </button>
+</a>
+
 </form>
 
 <br>
 
 <table border="1" cellpadding="10">
+
     <tr>
         <th>Code</th>
         <th>Image</th>
@@ -120,10 +110,10 @@ $query = mysqli_query($conn, $sql);
         <th>Category</th>
         <th>Price</th>
         <th>Stock</th>
-        <th>Action</th>
     </tr>
 
     <?php while($row = mysqli_fetch_assoc($query)) : ?>
+
     <tr>
 
         <td><?= htmlspecialchars($row['item_code']) ?></td>
@@ -144,28 +134,8 @@ $query = mysqli_query($conn, $sql);
 
         <td><?= $row['stock'] ?></td>
 
-        <td>
-
-            <a href="edit.php?id=<?= $row['id'] ?>">
-                <button>Edit</button>
-            </a>
-
-            <a href="stock-in.php?id=<?= $row['id'] ?>">
-                <button>Stock In</button>
-            </a>
-
-             <a href="stock-out.php?id=<?= $row['id'] ?>">
-                 <button>Stock Out</button>
-            </a>
-
-            <a href="products.php?delete=<?= $row['id'] ?>"
-               onclick="return confirm('Delete this product?')">
-                <button>Delete</button>
-            </a>
-
-        </td>
-
     </tr>
+
     <?php endwhile; ?>
 
 </table>

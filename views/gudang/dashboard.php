@@ -24,5 +24,9 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'Gudang') {
     <button>Products</button>
 </a>
 
+<a href="transactions.php">
+    <button>Transactions</button>
+</a>
+
 </body>
 </html>

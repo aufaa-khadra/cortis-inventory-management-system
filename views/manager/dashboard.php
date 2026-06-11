@@ -14,11 +14,30 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'Manager') {
 </head>
 <body>
 
-    <h1>Login Berhasil! Selamat Datang <?= htmlspecialchars($_SESSION['full_name']) ?></h1>
+<h1>
+    Welcome,
+    <?= htmlspecialchars($_SESSION['full_name']) ?>
+</h1>
 
-    <a href="../../auth/logout.php">
-        <button>Logout</button>
-    </a>
+<br>
+
+<a href="products.php">
+    <button>
+        Products
+    </button>
+</a>
+
+<a href="transactions.php">
+    <button>
+        Transactions
+    </button>
+</a>
+
+<a href="../../auth/logout.php">
+    <button>
+        Logout
+    </button>
+</a>
 
 </body>
 </html>
